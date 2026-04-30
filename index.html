@@ -125,3 +125,31 @@
             image-rendering: pixelated;
             transition: transform 0.3s ease;
         }
+
+
+        #crop-guide {
+            position: absolute;
+            border: 2px solid var(--retro-yellow);
+            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.7);
+            cursor: move;
+            display: none;
+            box-sizing: border-box;
+        }
+
+        .grid-line-v, .grid-line-h {
+            position: absolute;
+            background: rgba(248, 239, 2, 0.4);
+        }
+        .grid-line-v { width: 1px; height: 100%; top: 0; }
+        .grid-line-h { height: 1px; width: 100%; left: 0; }
+
+        .handle {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--retro-yellow);
+            border: 2px solid #000;
+        }
+        .br { bottom: -8px; right: -8px; cursor: nwse-resize; }
+
+        
