@@ -344,3 +344,13 @@
             ctx.restore();
             updatePreview();
         }
+
+        function setAspect(val) {
+            playClick();
+            aspectRatio = val;
+            if (val > 0) {
+                let currentW = cropGuide.offsetWidth;
+                cropGuide.style.height = (currentW / val) + 'px';
+            }
+            updatePreview();
+        }
