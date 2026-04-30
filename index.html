@@ -152,4 +152,27 @@
         }
         .br { bottom: -8px; right: -8px; cursor: nwse-resize; }
 
-        
+        .preview-pane {
+            width: 100%;
+            margin-top: 20px;
+            background: var(--classic-gray);
+            border: 4px inset var(--border-dark);
+            padding: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        #preview-canvas {
+            max-width: 100%;
+            border: 2px solid #000;
+            display: none;
+            background: #fff;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-dark);
+        }
