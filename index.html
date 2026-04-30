@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Crop Pro - Hack Club Edition</title>
+    <title>Retro Crop Pro v2.0 - Mobile Style</title>
     <style>
-
+        /* FEATURE: Retro Color Palette and UI Variables */
         :root {
             --retro-yellow: #f8ef02;
             --retro-green: #00ff41;
@@ -16,7 +16,7 @@
             --hack-red: #ec3750;
         }
 
-
+        /* FEATURE: Layout Foundation */
         body { 
             margin: 0; 
             font-family: 'Courier New', Courier, monospace;
@@ -26,12 +26,11 @@
             min-height: 100vh;
             background-color: var(--retro-dark-green);
             color: #000;
-            overflow-x: hidden;
         }
 
-        .header-spacer { height: 120px; width: 100%; }
+        .header-spacer { height: 80px; width: 100%; }
 
-
+        /* FEATURE: Main Application Container */
         .app-container {
             display: flex;
             flex-direction: row;
@@ -41,7 +40,6 @@
             border-bottom: 4px solid var(--border-dark);
             max-width: 1200px; 
             width: 95%;
-            z-index: 1;
             box-shadow: 15px 15px 0px rgba(0,0,0,0.4);
             margin-bottom: 50px;
         }
@@ -53,7 +51,7 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .main-editor {
@@ -62,34 +60,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #444;
+            background: #222;
+            position: relative;
         }
 
-
+        /* FEATURE: Retro Header Style */
         h1 { 
             width: 100%;
-            margin: 0;
-            color: #000; 
-            font-size: 1.5rem;
-            text-transform: uppercase;
+            margin: 0 0 15px 0;
             background: var(--retro-yellow);
             padding: 10px;
-            border-bottom: 4px solid #000;
+            border: 3px solid #000;
             text-align: center;
-            box-sizing: border-box;
+            font-size: 1.2rem;
         }
 
-        .section-label {
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        
         .btn-ui {
-            padding: 10px;
+            padding: 8px;
             cursor: pointer;
             background: var(--retro-green);
             border: 3px solid var(--border-light);
@@ -98,343 +85,264 @@
             font-weight: bold;
             font-family: inherit;
             text-transform: uppercase;
-            font-size: 0.75rem;
         }
 
-        .btn-ui:active { 
-            border: 3px solid #000;
-            border-right: 3px solid var(--border-light);
-            border-bottom: 3px solid var(--border-light);
-            transform: translate(1px, 1px);
-        }
+        .btn-ui:active { transform: translate(1px, 1px); border: 3px inset #000; }
 
-        .btn-danger { background: var(--hack-red); color: white; }
-
- #editor-wrapper {
+        /* FEATURE: Smartphone-Style Crop Interface */
+        #editor-wrapper {
             position: relative;
-            background: #111;
-            border: 4px solid #000;
-            user-select: none;
+            display: inline-block;
+            background: #000;
+            border: 2px solid #555;
+            line-height: 0;
             overflow: hidden;
-            max-width: 100%;
-            max-height: 70vh;
         }
 
-        #mainCanvas {
-            display: block;
-            image-rendering: pixelated;
-            transition: transform 0.3s ease;
-        }
+        canvas { max-width: 100%; height: auto; display: block; }
 
-
-        #crop-guide {
+        #crop-box {
             position: absolute;
             border: 2px solid var(--retro-yellow);
-            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.6); /* Dimmed background */
             cursor: move;
-            display: none;
             box-sizing: border-box;
+            display: none;
         }
 
-        .grid-line-v, .grid-line-h {
+        /* FEATURE: Rule of Thirds Grid Lines */
+        .grid-line {
             position: absolute;
-            background: rgba(248, 239, 2, 0.4);
+            background: rgba(248, 239, 2, 0.3);
+            pointer-events: none;
         }
-        .grid-line-v { width: 1px; height: 100%; top: 0; }
-        .grid-line-h { height: 1px; width: 100%; left: 0; }
+        .v1 { left: 33.33%; top: 0; width: 1px; height: 100%; }
+        .v2 { left: 66.66%; top: 0; width: 1px; height: 100%; }
+        .h1 { top: 33.33%; left: 0; height: 1px; width: 100%; }
+        .h2 { top: 66.66%; left: 0; height: 1px; width: 100%; }
 
+        /* FEATURE: Modern Interaction Handles */
         .handle {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background: var(--retro-yellow);
-            border: 2px solid #000;
+            border: 1px solid #000;
         }
-        .br { bottom: -8px; right: -8px; cursor: nwse-resize; }
+        .tl { top: -7px; left: -7px; cursor: nw-resize; }
+        .tr { top: -7px; right: -7px; cursor: ne-resize; }
+        .bl { bottom: -7px; left: -7px; cursor: sw-resize; }
+        .br { bottom: -7px; right: -7px; cursor: se-resize; }
+        .tm { top: -7px; left: calc(50% - 7px); cursor: n-resize; }
+        .bm { bottom: -7px; left: calc(50% - 7px); cursor: s-resize; }
+        .lm { left: -7px; top: calc(50% - 7px); cursor: w-resize; }
+        .rm { right: -7px; top: calc(50% - 7px); cursor: e-resize; }
 
         .preview-pane {
-            width: 100%;
-            margin-top: 20px;
-            background: var(--classic-gray);
-            border: 4px inset var(--border-dark);
+            margin-top: 15px;
             padding: 10px;
+            background: var(--classic-gray);
+            border: 3px inset #fff;
             text-align: center;
-            box-sizing: border-box;
         }
 
-        #preview-canvas {
-            max-width: 100%;
-            border: 2px solid #000;
-            display: none;
-            background: #fff;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-dark);
-        }
-
-        input[type="range"] {
-            width: 100%;
-            cursor: pointer;
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 20px;
-            font-weight: bold;
-            color: #000;
-            background: var(--retro-yellow);
-            width: 100%;
-            text-align: center;
-            border-top: 4px solid #000;
-        }
-        
+        #preview-canvas { border: 2px solid #000; max-width: 200px; display: none; }
 
         @media (max-width: 800px) {
             .app-container { flex-direction: column; }
-            .sidebar { width: auto; border-right: none; border-bottom: 4px solid var(--border-dark); }
+            .sidebar { width: auto; border-right: none; }
         }
     </style>
 </head>
 <body>
 
-    <a href="https://hackclub.com/">
-        <img style="position: absolute; top: 0; left: 10px; border: 0; width: 256px; z-index: 999;" 
-             src="https://assets.hackclub.com/flag-orpheus-top.svg" alt="Hack Club"/>
-    </a>
-
-    <audio id="clickSound" src="button.mp3" preload="auto"></audio>
-
     <div class="header-spacer"></div>
 
     <div class="app-container">
         <div class="sidebar">
-            <div class="control-group">
-                <span class="section-label">File Operations</span>
-                <button class="btn-ui" id="btnLoad">📂 Open Image</button>
-                <input type="file" id="fileInput" accept="image/*" style="display:none">
-                <button class="btn-ui" id="saveBtn">💾 Export Crop</button>
-                <button class="btn-ui btn-danger" id="resetBtn">🔄 Reset All</button>
-            </div>
+            <button class="btn-ui" id="btnLoad">📂 Open Image</button>
+            <input type="file" id="fileInput" accept="image/*" style="display:none">
+            
+            <span style="font-size: 10px; font-weight: bold;">TRANSFORM</span>
+            <button class="btn-ui" id="rotateBtn">🔄 Rotate 90°</button>
+            
+            <span style="font-size: 10px; font-weight: bold;">ASPECT RATIO</span>
+            <button class="btn-ui" onclick="setAspect(1)">1:1 Square</button>
+            <button class="btn-ui" onclick="setAspect(16/9)">16:9 Wide</button>
+            <button class="btn-ui" onclick="setAspect(9/16)">9:16 Story</button>
+            <button class="btn-ui" onclick="setAspect(0)">Free Form</button>
 
-            <div class="control-group">
-                <span class="section-label">Transform</span>
-                <button class="btn-ui" id="rotateBtn">🔄 Rotate 90°</button>
-                <span class="section-label">Zoom View</span>
-                <input type="range" id="zoomRange" min="0.1" max="2" step="0.1" value="1">
-            </div>
+            <span style="font-size: 10px; font-weight: bold;">FILTERS</span>
+            <button class="btn-ui" onclick="applyFilter('grayscale(100%)')">B&W</button>
+            <button class="btn-ui" onclick="applyFilter('sepia(100%)')">Sepia</button>
+            <button class="btn-ui" onclick="applyFilter('none')">Reset Filter</button>
 
-            <div class="control-group">
-                <span class="section-label">Aspect Ratio</span>
-                <button class="btn-ui" onclick="setAspect(1)">1:1 Square</button>
-                <button class="btn-ui" onclick="setAspect(16/9)">16:9 Wide</button>
-                <button class="btn-ui" onclick="setAspect(9/16)">9:16 Story</button>
-                <button class="btn-ui" onclick="setAspect(0)">Free Form</button>
-            </div>
-
-            <div class="control-group">
-                <span class="section-label">Filters</span>
-                <button class="btn-ui" onclick="applyFilter('none')">Normal</button>
-                <button class="btn-ui" onclick="applyFilter('grayscale(100%)')">Grayscale</button>
-                <button class="btn-ui" onclick="applyFilter('sepia(100%)')">Sepia</button>
-                <button class="btn-ui" onclick="applyFilter('invert(100%)')">Invert</button>
-                <button class="btn-ui" onclick="applyFilter('blur(5px)')">Blur</button>
-            </div>
+            <button class="btn-ui" id="saveBtn" style="background: #fff; margin-top: 20px;">💾 EXPORT</button>
         </div>
 
         <div class="main-editor">
-            <h1>Retro Crop Pro v2.0</h1>
+            <h1>RETRO CROP PRO</h1>
             <div id="editor-wrapper">
                 <canvas id="mainCanvas"></canvas>
-                <div id="crop-guide">
-                    <div class="grid-line-v" style="left: 33.3%;"></div>
-                    <div class="grid-line-v" style="left: 66.6%;"></div>
-                    <div class="grid-line-h" style="top: 33.3%;"></div>
-                    <div class="grid-line-h" style="top: 66.6%;"></div>
-                    <div class="handle br"></div>
+                <div id="crop-box">
+                    <div class="grid-line v1"></div><div class="grid-line v2"></div>
+                    <div class="grid-line h1"></div><div class="grid-line h2"></div>
+                    <div class="handle tl" data-handle="tl"></div>
+                    <div class="handle tr" data-handle="tr"></div>
+                    <div class="handle bl" data-handle="bl"></div>
+                    <div class="handle br" data-handle="br"></div>
+                    <div class="handle tm" data-handle="tm"></div>
+                    <div class="handle bm" data-handle="bm"></div>
+                    <div class="handle lm" data-handle="lm"></div>
+                    <div class="handle rm" data-handle="rm"></div>
                 </div>
             </div>
 
             <div class="preview-pane">
-                <span class="section-label">Output Preview</span>
                 <canvas id="preview-canvas"></canvas>
             </div>
         </div>
     </div>
 
-    <footer>Sadrita Neogi (Hack Club) • 2024 Retro Suite</footer>
-
     <script>
-
+        /* FEATURE: Core State Variables */
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
-        const cropGuide = document.getElementById('crop-guide');
+        const cropBox = document.getElementById('crop-box');
         const fileInput = document.getElementById('fileInput');
         const btnLoad = document.getElementById('btnLoad');
         const previewCanvas = document.getElementById('preview-canvas');
         const pCtx = previewCanvas.getContext('2d');
-        const clickSound = document.getElementById('clickSound');
-        const zoomRange = document.getElementById('zoomRange');
 
         let img = new Image();
-        let isMoving = false;
-        let isResizing = false;
-        let startX, startY, initialW, initialH, initialL, initialT;
         let rotation = 0;
         let currentFilter = 'none';
-        let aspectRatio = 0; 
-        
+        let aspect = 0; // 0 = Free
+        let isDragging = false;
+        let activeHandle = null;
+        let startX, startY, initialBox = {};
 
-
-        function playClick() {
-            clickSound.currentTime = 0;
-            clickSound.play().catch(() => {});
-        }
-
-
-        btnLoad.addEventListener('click', () => { playClick(); fileInput.click(); });
-
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        /* FEATURE: Image Loading and Scaling */
+        btnLoad.onclick = () => fileInput.click();
+        fileInput.onchange = (e) => {
             const reader = new FileReader();
-            reader.onload = (f) => {
+            reader.onload = (event) => {
                 img.onload = () => {
                     rotation = 0;
-                    resetCanvasTransform();
-                    drawImageToCanvas();
-                    initCropGuide();
+                    renderCanvas();
+                    initCropBox();
                 };
-                img.src = f.target.result;
+                img.src = event.target.result;
             };
-            reader.readAsDataURL(file);
-        });
+            reader.readAsDataURL(e.target.files[0]);
+        };
 
-
-        function drawImageToCanvas() {
+        function renderCanvas() {
             if (!img.src) return;
-            const maxDim = 800;
-            let w = img.width;
-            let h = img.height;
-
-            if (rotation % 180 !== 0) {
-                [w, h] = [h, w];
-            }
-
-            const scale = Math.min(maxDim / w, maxDim / h, 1);
+            const max = 600;
+            let w = img.width, h = img.height;
+            if (rotation % 180 !== 0) [w, h] = [h, w];
+            
+            const scale = Math.min(max/w, max/h, 1);
             canvas.width = w * scale;
             canvas.height = h * scale;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.filter = currentFilter;
-            
             ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate((rotation * Math.PI) / 180);
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.rotate(rotation * Math.PI / 180);
             
-            if (rotation % 180 !== 0) {
-                ctx.drawImage(img, -canvas.height / 2, -canvas.width / 2, canvas.height, canvas.width);
-            } else {
-                ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-            }
+            const drawW = (rotation % 180 === 0) ? canvas.width : canvas.height;
+            const drawH = (rotation % 180 === 0) ? canvas.height : canvas.width;
+            ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH);
             ctx.restore();
             updatePreview();
         }
 
-        function setAspect(val) {
-            playClick();
-            aspectRatio = val;
-            if (val > 0) {
-                let currentW = cropGuide.offsetWidth;
-                cropGuide.style.height = (currentW / val) + 'px';
-            }
+        /* FEATURE: Intelligent Crop Box Placement */
+        function initCropBox() {
+            cropBox.style.display = 'block';
+            cropBox.style.width = (canvas.width * 0.8) + 'px';
+            cropBox.style.height = (canvas.height * 0.8) + 'px';
+            cropBox.style.left = (canvas.width * 0.1) + 'px';
+            cropBox.style.top = (canvas.height * 0.1) + 'px';
             updatePreview();
         }
 
-
-        cropGuide.addEventListener('mousedown', (e) => {
-            playClick();
-            if (e.target.classList.contains('handle')) isResizing = true;
-            else isMoving = true;
-            
+        /* FEATURE: Phone-Style Drag & Resize Engine */
+        cropBox.onmousedown = (e) => {
+            isDragging = true;
+            activeHandle = e.target.dataset.handle || 'move';
             startX = e.clientX;
             startY = e.clientY;
-            initialW = cropGuide.offsetWidth;
-            initialH = cropGuide.offsetHeight;
-            initialL = cropGuide.offsetLeft;
-            initialT = cropGuide.offsetTop;
-            e.preventDefault();
-        });
+            initialBox = {
+                l: cropBox.offsetLeft,
+                t: cropBox.offsetTop,
+                w: cropBox.offsetWidth,
+                h: cropBox.offsetHeight
+            };
+            e.stopPropagation();
+        };
 
-        window.addEventListener('mousemove', (e) => {
-            if (!isMoving && !isResizing) return;
+        window.onmousemove = (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            let { l, t, w, h } = initialBox;
 
-            const dx = (e.clientX - startX);
-            const dy = (e.clientY - startY);
+            if (activeHandle === 'move') {
+                l = Math.max(0, Math.min(l + dx, canvas.width - w));
+                t = Math.max(0, Math.min(t + dy, canvas.height - h));
+            } else {
+                // Handle Logic for 8 Points
+                if (activeHandle.includes('r')) w = Math.min(canvas.width - l, w + dx);
+                if (activeHandle.includes('l')) { 
+                    const newL = Math.max(0, Math.min(l + dx, l + w - 20));
+                    w += (l - newL); l = newL; 
+                }
+                if (activeHandle.includes('b')) h = Math.min(canvas.height - t, h + dy);
+                if (activeHandle.includes('t')) { 
+                    const newT = Math.max(0, Math.min(t + dy, t + h - 20));
+                    h += (t - newT); t = newT; 
+                }
 
-            if (isMoving) {
-                let newL = initialL + dx;
-                let newT = initialT + dy;
-                newL = Math.max(0, Math.min(newL, canvas.width - cropGuide.offsetWidth));
-                newT = Math.max(0, Math.min(newT, canvas.height - cropGuide.offsetHeight));
-                cropGuide.style.left = newL + 'px';
-                cropGuide.style.top = newT + 'px';
-            }
-
-            if (isResizing) {
-                let newW = initialW + dx;
-                let newH = aspectRatio > 0 ? newW / aspectRatio : initialH + dy;
-
-                if (newW > 40 && newW + cropGuide.offsetLeft <= canvas.width &&
-                    newH > 40 && newH + cropGuide.offsetTop <= canvas.height) {
-                    cropGuide.style.width = newW + 'px';
-                    cropGuide.style.height = newH + 'px';
+                // Aspect Ratio Enforcement
+                if (aspect > 0) {
+                    if (activeHandle.includes('r') || activeHandle.includes('l')) h = w / aspect;
+                    else w = h * aspect;
                 }
             }
+
+            cropBox.style.left = l + 'px';
+            cropBox.style.top = t + 'px';
+            cropBox.style.width = Math.max(w, 20) + 'px';
+            cropBox.style.height = Math.max(h, 20) + 'px';
             updatePreview();
-        });
+        };
 
-        window.addEventListener('mouseup', () => { isMoving = false; isResizing = false; });
+        window.onmouseup = () => isDragging = false;
 
+        /* FEATURE: Real-time Crop Projection */
         function updatePreview() {
-            if (!img.src) return;
-            const rect = cropGuide.getBoundingClientRect();
-            const canvasRect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / canvasRect.width;
-            const scaleY = canvas.height / canvasRect.height;
-
-            const x = (rect.left - canvasRect.left) * scaleX;
-            const y = (rect.top - canvasRect.top) * scaleY;
-            const w = rect.width * scaleX;
-            const h = rect.height * scaleY;
-
-            if (w > 0 && h > 0) {
-                previewCanvas.width = w;
-                previewCanvas.height = h;
-                previewCanvas.style.display = 'inline-block';
-                pCtx.filter = currentFilter;
-                pCtx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
-            }
+            const w = cropBox.offsetWidth;
+            const h = cropBox.offsetHeight;
+            previewCanvas.width = w;
+            previewCanvas.height = h;
+            previewCanvas.style.display = 'inline-block';
+            pCtx.drawImage(canvas, cropBox.offsetLeft, cropBox.offsetTop, w, h, 0, 0, w, h);
         }
 
-
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            playClick();
-            if (!previewCanvas.width) return;
+        /* FEATURE: UI Control Hooks */
+        function setAspect(val) { aspect = val; initCropBox(); }
+        function applyFilter(f) { currentFilter = f; renderCanvas(); }
+        document.getElementById('rotateBtn').onclick = () => { rotation = (rotation + 90) % 360; renderCanvas(); };
+        
+        document.getElementById('saveBtn').onclick = () => {
             const link = document.createElement('a');
-            link.download = 'retro-crop-export.png';
-            link.href = previewCanvas.toDataURL('image/png');
+            link.download = 'crop-export.png';
+            link.href = previewCanvas.toDataURL();
             link.click();
-        });
-
-        function resetCanvasTransform() {
-            canvas.style.transform = 'scale(1)';
-            zoomRange.value = 1;
-        }
+        };
     </script>
 </body>
 </html>
