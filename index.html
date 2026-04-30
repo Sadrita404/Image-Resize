@@ -420,3 +420,13 @@
                 pCtx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
             }
         }
+
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            playClick();
+            if (!previewCanvas.width) return;
+            const link = document.createElement('a');
+            link.download = 'retro-crop-export.png';
+            link.href = previewCanvas.toDataURL('image/png');
+            link.click();
+        });
