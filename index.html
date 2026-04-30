@@ -354,3 +354,48 @@
             }
             updatePreview();
         }
+
+
+        cropGuide.addEventListener('mousedown', (e) => {
+            playClick();
+            if (e.target.classList.contains('handle')) isResizing = true;
+            else isMoving = true;
+            
+            startX = e.clientX;
+            startY = e.clientY;
+            initialW = cropGuide.offsetWidth;
+            initialH = cropGuide.offsetHeight;
+            initialL = cropGuide.offsetLeft;
+            initialT = cropGuide.offsetTop;
+            e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isMoving && !isResizing) return;
+
+            const dx = (e.clientX - startX);
+            const dy = (e.clientY - startY);
+
+            if (isMoving) {
+                let newL = initialL + dx;
+                let newT = initialT + dy;
+                newL = Math.max(0, Math.min(newL, canvas.width - cropGuide.offsetWidth));
+                newT = Math.max(0, Math.min(newT, canvas.height - cropGuide.offsetHeight));
+                cropGuide.style.left = newL + 'px';
+                cropGuide.style.top = newT + 'px';
+            }
+
+            if (isResizing) {
+                let newW = initialW + dx;
+                let newH = aspectRatio > 0 ? newW / aspectRatio : initialH + dy;
+
+                if (newW > 40 && newW + cropGuide.offsetLeft <= canvas.width &&
+                    newH > 40 && newH + cropGuide.offsetTop <= canvas.height) {
+                    cropGuide.style.width = newW + 'px';
+                    cropGuide.style.height = newH + 'px';
+                }
+            }
+            updatePreview();
+        });
+
+        window.addEventListener('mouseup', () => { isMoving = false; isResizing = false; });
