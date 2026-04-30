@@ -269,7 +269,7 @@
     <footer>Sadrita Neogi (Hack Club) • 2024 Retro Suite</footer>
 
     <script>
-        /* FEATURE: Canvas and UI State Initialization */
+
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
         const cropGuide = document.getElementById('crop-guide');
@@ -287,6 +287,60 @@
         let rotation = 0;
         let currentFilter = 'none';
         let aspectRatio = 0; 
+        
 
-        
-        
+
+        function playClick() {
+            clickSound.currentTime = 0;
+            clickSound.play().catch(() => {});
+        }
+
+
+        btnLoad.addEventListener('click', () => { playClick(); fileInput.click(); });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (f) => {
+                img.onload = () => {
+                    rotation = 0;
+                    resetCanvasTransform();
+                    drawImageToCanvas();
+                    initCropGuide();
+                };
+                img.src = f.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+
+        function drawImageToCanvas() {
+            if (!img.src) return;
+            const maxDim = 800;
+            let w = img.width;
+            let h = img.height;
+
+            if (rotation % 180 !== 0) {
+                [w, h] = [h, w];
+            }
+
+            const scale = Math.min(maxDim / w, maxDim / h, 1);
+            canvas.width = w * scale;
+            canvas.height = h * scale;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.filter = currentFilter;
+            
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate((rotation * Math.PI) / 180);
+            
+            if (rotation % 180 !== 0) {
+                ctx.drawImage(img, -canvas.height / 2, -canvas.width / 2, canvas.height, canvas.width);
+            } else {
+                ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+            }
+            ctx.restore();
+            updatePreview();
+        }
