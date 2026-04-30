@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset = "UTF-8">
-    <meta name = "viewport " content ="width=device-width, initial-scale=1.0">
-    <title>Image Resize - Hack Club</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Crop Pro - Hack Club Edition</title>
     <style>
-        
+
         :root {
             --retro-yellow: #f8ef02;
             --retro-green: #00ff41;
             --retro-dark-green: #003b00;
             --classic-gray: #c0c0c0;
+            --border-light: #ffffff;
             --border-dark: #808080;
             --hack-red: #ec3750;
         }
 
-        body {
-            margin: 0;
-            font-familt: 'Courier New', Courier,monospace;
+
+        body { 
+            margin: 0; 
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
-            align-items: centre;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
             background-color: var(--retro-dark-green);
             color: #000;
             overflow-x: hidden;
-
         }
 
-        .header-spacer { height: 120px ; width: 100%;}
+        .header-spacer { height: 120px; width: 100%; }
 
 
         .app-container {
             display: flex;
+            flex-direction: row;
             background-color: var(--classic-gray);
             border: 4px solid var(--border-light);
             border-right: 4px solid var(--border-dark);
             border-bottom: 4px solid var(--border-dark);
-            max-width: 1200px;
+            max-width: 1200px; 
             width: 95%;
-            z-index:1;
+            z-index: 1;
             box-shadow: 15px 15px 0px rgba(0,0,0,0.4);
             margin-bottom: 50px;
         }
@@ -50,11 +53,8 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap:15px;
-
+            gap: 15px;
         }
-
-
 
         .main-editor {
             flex: 1;
@@ -63,13 +63,13 @@
             flex-direction: column;
             align-items: center;
             background: #444;
-
         }
 
-        h1 {
+
+        h1 { 
             width: 100%;
             margin: 0;
-            color: #000;
+            color: #000; 
             font-size: 1.5rem;
             text-transform: uppercase;
             background: var(--retro-yellow);
@@ -77,9 +77,9 @@
             border-bottom: 4px solid #000;
             text-align: center;
             box-sizing: border-box;
-
         }
-        .selection-lable {
+
+        .section-label {
             font-size: 0.8rem;
             font-weight: bold;
             margin-bottom: 5px;
@@ -87,10 +87,11 @@
             text-transform: uppercase;
         }
 
+        
         .btn-ui {
-            padding:10px;
+            padding: 10px;
             cursor: pointer;
-            background:var(--retrop-green);
+            background: var(--retro-green);
             border: 3px solid var(--border-light);
             border-right: 3px solid #000;
             border-bottom: 3px solid #000;
@@ -100,18 +101,27 @@
             font-size: 0.75rem;
         }
 
-        .btn-ui:active {
-            boarder: 3px solid #000;
+        .btn-ui:active { 
+            border: 3px solid #000;
             border-right: 3px solid var(--border-light);
-            border-bottom: 3px solid var (--border-light);
+            border-bottom: 3px solid var(--border-light);
             transform: translate(1px, 1px);
         }
 
+        .btn-danger { background: var(--hack-red); color: white; }
 
-        .btn-danger { background: var(--hack-red); color : white;}
-        
+ #editor-wrapper {
+            position: relative;
+            background: #111;
+            border: 4px solid #000;
+            user-select: none;
+            overflow: hidden;
+            max-width: 100%;
+            max-height: 70vh;
+        }
 
-    </style>
-</head>    
-</html>
-
+        #mainCanvas {
+            display: block;
+            image-rendering: pixelated;
+            transition: transform 0.3s ease;
+        }
