@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Crop Pro v2.0 - Mobile Style</title>
+    <title>Retro Crop Pro - Hack Club</title>
     <style>
-        /* FEATURE: Retro Color Palette and UI Variables */
         :root {
-            --retro-yellow: #b385f4;
-            --retro-green: #ffa743;
-            --retro-dark-green: #e4fd97;
-            --classic-gray: #ffffff;
-            --border-light: #ffffff;
-            --border-dark: #fffcfc;
-            --hack-red: #ec3750;
+            --accent-purple: #6e1fce;
+            --accent-orange: #ff8c37;
+            --bg-soft-yellow: #fdf5d2;
+            --panel-white: #ffffff;
+            --editor-blue: #00bacf;
+            --text-dark: #2d2d2d;
         }
 
-        /* FEATURE: Layout Foundation */
         body { 
             margin: 0; 
             font-family: 'Courier New', Courier, monospace;
@@ -24,96 +21,100 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--retro-dark-green);
-            color: #000;
+            background-color: var(--bg-soft-yellow);
+            color: var(--text-dark);
+            overflow-x: hidden;
         }
 
-        .header-spacer { height: 80px; width: 100%; }
+        .header-spacer { height: 100px; width: 100%; }
 
-        /* FEATURE: Main Application Container */
         .app-container {
             display: flex;
             flex-direction: row;
-            background-color: var(--classic-gray);
-            border: 4px solid var(--border-light);
-            border-right: 4px solid var(--border-dark);
-            border-bottom: 4px solid var(--border-dark);
-            max-width: 1200px; 
+            background-color: var(--panel-white);
+            border: 4px solid var(--text-dark);
+            max-width: 1100px; 
             width: 95%;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.4);
-            margin-bottom: 50px;
+            box-shadow: 12px 12px 0px var(--accent-purple);
+            margin-bottom: 30px;
+            z-index: 5;
         }
 
         .sidebar {
-            width: 250px;
-            background: #a0a0a0;
-            border-right: 4px solid var(--border-dark);
+            width: 260px;
+            background: #f0f0f0;
+            border-right: 4px solid var(--text-dark);
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .main-editor {
             flex: 1;
-            padding: 20px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #25d0ff;
+            background: var(--editor-blue);
             position: relative;
         }
 
-        /* FEATURE: Retro Header Style */
         h1 { 
             width: 100%;
-            margin: 0 0 15px 0;
-            background: var(--retro-yellow);
-            padding: 10px;
-            border: 3px solid #000;
+            margin: 0 0 20px 0;
+            background: var(--accent-purple);
+            color: white;
+            padding: 12px;
+            border: 3px solid var(--text-dark);
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .btn-ui {
-            padding: 8px;
+            padding: 10px;
             cursor: pointer;
-            background: var(--retro-green);
-            border: 3px solid var(--border-light);
-            border-right: 3px solid #000;
-            border-bottom: 3px solid #000;
+            background: var(--accent-orange);
+            color: white;
+            border: 3px solid var(--text-dark);
             font-weight: bold;
             font-family: inherit;
             text-transform: uppercase;
+            transition: transform 0.1s;
         }
 
-        .btn-ui:active { transform: translate(1px, 1px); border: 3px inset #000; }
+        .btn-ui:active { transform: translate(2px, 2px); box-shadow: none; }
+        .btn-ui:hover { filter: brightness(1.1); }
 
-        /* FEATURE: Smartphone-Style Crop Interface */
         #editor-wrapper {
             position: relative;
             display: inline-block;
-            background: #000;
-            border: 2px solid #555;
+            background: #1a1a1a;
+            border: 4px solid var(--text-dark);
             line-height: 0;
-            overflow: hidden;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+            /* This contains the dimming effect to the canvas only */
+            overflow: hidden; 
         }
 
         canvas { max-width: 100%; height: auto; display: block; }
 
         #crop-box {
             position: absolute;
-            border: 2px solid var(--retro-yellow);
-            box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.6); /* Dimmed background */
+            border: 2px solid #fff;
+            outline: 2px solid var(--accent-purple);
+            /* Dimming effect now only covers the image area */
+            box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.6);
             cursor: move;
             box-sizing: border-box;
             display: none;
         }
 
-        /* FEATURE: Rule of Thirds Grid Lines */
         .grid-line {
             position: absolute;
-            background: rgba(248, 239, 2, 0.3);
+            background: rgba(255, 255, 255, 0.4);
             pointer-events: none;
         }
         .v1 { left: 33.33%; top: 0; width: 1px; height: 100%; }
@@ -121,40 +122,58 @@
         .h1 { top: 33.33%; left: 0; height: 1px; width: 100%; }
         .h2 { top: 66.66%; left: 0; height: 1px; width: 100%; }
 
-        /* FEATURE: Modern Interaction Handles */
         .handle {
             position: absolute;
-            width: 14px;
-            height: 14px;
-            background: var(--retro-yellow);
-            border: 1px solid #000;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-purple);
+            border: 2px solid white;
         }
-        .tl { top: -7px; left: -7px; cursor: nw-resize; }
-        .tr { top: -7px; right: -7px; cursor: ne-resize; }
-        .bl { bottom: -7px; left: -7px; cursor: sw-resize; }
-        .br { bottom: -7px; right: -7px; cursor: se-resize; }
-        .tm { top: -7px; left: calc(50% - 7px); cursor: n-resize; }
-        .bm { bottom: -7px; left: calc(50% - 7px); cursor: s-resize; }
-        .lm { left: -7px; top: calc(50% - 7px); cursor: w-resize; }
-        .rm { right: -7px; top: calc(50% - 7px); cursor: e-resize; }
+        .tl { top: -8px; left: -8px; cursor: nw-resize; }
+        .tr { top: -8px; right: -8px; cursor: ne-resize; }
+        .bl { bottom: -8px; left: -8px; cursor: sw-resize; }
+        .br { bottom: -8px; right: -8px; cursor: se-resize; }
+        .tm { top: -8px; left: calc(50% - 6px); cursor: n-resize; }
+        .bm { bottom: -8px; left: calc(50% - 6px); cursor: s-resize; }
+        .lm { left: -8px; top: calc(50% - 6px); cursor: w-resize; }
+        .rm { right: -8px; top: calc(50% - 6px); cursor: e-resize; }
 
         .preview-pane {
-            margin-top: 15px;
-            padding: 10px;
-            background: var(--classic-gray);
-            border: 3px inset #fff;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--panel-white);
+            border: 3px solid var(--text-dark);
             text-align: center;
         }
 
-        #preview-canvas { border: 2px solid #000; max-width: 200px; display: none; }
+        #preview-canvas { border: 2px solid var(--text-dark); max-width: 180px; display: none; }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            background: var(--text-dark);
+            color: var(--bg-soft-yellow);
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-top: 4px solid var(--accent-orange);
+            margin-top: auto;
+        }
 
         @media (max-width: 800px) {
             .app-container { flex-direction: column; }
-            .sidebar { width: auto; border-right: none; }
+            .sidebar { width: auto; border-right: none; border-bottom: 4px solid var(--text-dark); }
+            .header-spacer { height: 140px; }
         }
     </style>
 </head>
 <body>
+
+    <a href="https://hackclub.com/">
+        <img style="position: absolute; top: 0; left: 10px; border: 0; width: 256px; z-index: 999;" src="https://assets.hackclub.com/flag-orpheus-top.svg" alt="Hack Club"/>
+    </a>
+
+    <audio id="clickSfx" src="button.mp3" preload="auto"></audio>
 
     <div class="header-spacer"></div>
 
@@ -163,25 +182,25 @@
             <button class="btn-ui" id="btnLoad">📂 Open Image</button>
             <input type="file" id="fileInput" accept="image/*" style="display:none">
             
-            <span style="font-size: 10px; font-weight: bold;">TRANSFORM</span>
+            <label style="font-size: 11px; font-weight: 900; color: var(--accent-purple);">EDIT TOOLS</label>
             <button class="btn-ui" id="rotateBtn">🔄 Rotate 90°</button>
             
-            <span style="font-size: 10px; font-weight: bold;">ASPECT RATIO</span>
+            <label style="font-size: 11px; font-weight: 900; color: var(--accent-purple);">ASPECT RATIO</label>
             <button class="btn-ui" onclick="setAspect(1)">1:1 Square</button>
             <button class="btn-ui" onclick="setAspect(16/9)">16:9 Wide</button>
             <button class="btn-ui" onclick="setAspect(9/16)">9:16 Story</button>
-            <button class="btn-ui" onclick="setAspect(0)">Free Form</button>
+            <button class="btn-ui" onclick="setAspect(0)">Free</button>
 
-            <span style="font-size: 10px; font-weight: bold;">FILTERS</span>
-            <button class="btn-ui" onclick="applyFilter('grayscale(100%)')">B&W</button>
-            <button class="btn-ui" onclick="applyFilter('sepia(100%)')">Sepia</button>
-            <button class="btn-ui" onclick="applyFilter('none')">Reset Filter</button>
+            <label style="font-size: 11px; font-weight: 900; color: var(--accent-purple);">FILTERS</label>
+            <button class="btn-ui" onclick="applyFilter('grayscale(100%)')">Mono</button>
+            <button class="btn-ui" onclick="applyFilter('sepia(100%)')">Vintage</button>
+            <button class="btn-ui" onclick="applyFilter('none')">Reset</button>
 
-            <button class="btn-ui" id="saveBtn" style="background: #fff; margin-top: 20px;">💾 EXPORT</button>
+            <button class="btn-ui" id="saveBtn" style="background: var(--text-dark); color: white; margin-top: 15px;">💾 Export</button>
         </div>
 
         <div class="main-editor">
-            <h1>RETRO CROP PRO</h1>
+            <h1>Retro Crop Pro</h1>
             <div id="editor-wrapper">
                 <canvas id="mainCanvas"></canvas>
                 <div id="crop-box">
@@ -204,8 +223,11 @@
         </div>
     </div>
 
+    <footer>
+        Sadrita Neogi (Hack Club)
+    </footer>
+
     <script>
-        /* FEATURE: Core State Variables */
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
         const cropBox = document.getElementById('crop-box');
@@ -213,16 +235,25 @@
         const btnLoad = document.getElementById('btnLoad');
         const previewCanvas = document.getElementById('preview-canvas');
         const pCtx = previewCanvas.getContext('2d');
+        const sfx = document.getElementById('clickSfx');
 
         let img = new Image();
         let rotation = 0;
         let currentFilter = 'none';
-        let aspect = 0; // 0 = Free
+        let aspect = 0; 
         let isDragging = false;
         let activeHandle = null;
         let startX, startY, initialBox = {};
 
-        /* FEATURE: Image Loading and Scaling */
+        function playSound() {
+            sfx.currentTime = 0;
+            sfx.play().catch(() => {});
+        }
+
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', playSound);
+        });
+
         btnLoad.onclick = () => fileInput.click();
         fileInput.onchange = (e) => {
             const reader = new FileReader();
@@ -239,7 +270,7 @@
 
         function renderCanvas() {
             if (!img.src) return;
-            const max = 600;
+            const max = 550;
             let w = img.width, h = img.height;
             if (rotation % 180 !== 0) [w, h] = [h, w];
             
@@ -259,18 +290,17 @@
             updatePreview();
         }
 
-        /* FEATURE: Intelligent Crop Box Placement */
         function initCropBox() {
             cropBox.style.display = 'block';
-            cropBox.style.width = (canvas.width * 0.8) + 'px';
-            cropBox.style.height = (canvas.height * 0.8) + 'px';
-            cropBox.style.left = (canvas.width * 0.1) + 'px';
-            cropBox.style.top = (canvas.height * 0.1) + 'px';
+            cropBox.style.width = (canvas.width * 0.7) + 'px';
+            cropBox.style.height = (canvas.height * 0.7) + 'px';
+            cropBox.style.left = (canvas.width * 0.15) + 'px';
+            cropBox.style.top = (canvas.height * 0.15) + 'px';
             updatePreview();
         }
 
-        /* FEATURE: Phone-Style Drag & Resize Engine */
         cropBox.onmousedown = (e) => {
+            playSound();
             isDragging = true;
             activeHandle = e.target.dataset.handle || 'move';
             startX = e.clientX;
@@ -294,19 +324,17 @@
                 l = Math.max(0, Math.min(l + dx, canvas.width - w));
                 t = Math.max(0, Math.min(t + dy, canvas.height - h));
             } else {
-                // Handle Logic for 8 Points
                 if (activeHandle.includes('r')) w = Math.min(canvas.width - l, w + dx);
                 if (activeHandle.includes('l')) { 
-                    const newL = Math.max(0, Math.min(l + dx, l + w - 20));
+                    const newL = Math.max(0, Math.min(l + dx, l + w - 30));
                     w += (l - newL); l = newL; 
                 }
                 if (activeHandle.includes('b')) h = Math.min(canvas.height - t, h + dy);
                 if (activeHandle.includes('t')) { 
-                    const newT = Math.max(0, Math.min(t + dy, t + h - 20));
+                    const newT = Math.max(0, Math.min(t + dy, t + h - 30));
                     h += (t - newT); t = newT; 
                 }
 
-                // Aspect Ratio Enforcement
                 if (aspect > 0) {
                     if (activeHandle.includes('r') || activeHandle.includes('l')) h = w / aspect;
                     else w = h * aspect;
@@ -315,15 +343,15 @@
 
             cropBox.style.left = l + 'px';
             cropBox.style.top = t + 'px';
-            cropBox.style.width = Math.max(w, 20) + 'px';
-            cropBox.style.height = Math.max(h, 20) + 'px';
+            cropBox.style.width = Math.max(w, 30) + 'px';
+            cropBox.style.height = Math.max(h, 30) + 'px';
             updatePreview();
         };
 
         window.onmouseup = () => isDragging = false;
 
-        /* FEATURE: Real-time Crop Projection */
         function updatePreview() {
+            if (!img.src) return;
             const w = cropBox.offsetWidth;
             const h = cropBox.offsetHeight;
             previewCanvas.width = w;
@@ -332,14 +360,14 @@
             pCtx.drawImage(canvas, cropBox.offsetLeft, cropBox.offsetTop, w, h, 0, 0, w, h);
         }
 
-        /* FEATURE: UI Control Hooks */
         function setAspect(val) { aspect = val; initCropBox(); }
         function applyFilter(f) { currentFilter = f; renderCanvas(); }
         document.getElementById('rotateBtn').onclick = () => { rotation = (rotation + 90) % 360; renderCanvas(); };
         
         document.getElementById('saveBtn').onclick = () => {
+            if (!img.src) return;
             const link = document.createElement('a');
-            link.download = 'crop-export.png';
+            link.download = 'hackclub-crop.png';
             link.href = previewCanvas.toDataURL();
             link.click();
         };
