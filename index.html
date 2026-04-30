@@ -347,7 +347,6 @@
             cropBox.style.height = Math.max(h, 30) + 'px';
             updatePreview();
         };
-
         window.onmouseup = () => isDragging = false;
 
         function updatePreview() {
@@ -370,6 +369,7 @@
             link.download = 'hackclub-crop.png';
             link.href = previewCanvas.toDataURL();
             link.click();
+            /* This Website is made by Sadrita Neogi ( Hack Club) */
         };
     </script>
 </body>
