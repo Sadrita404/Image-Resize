@@ -399,3 +399,24 @@
         });
 
         window.addEventListener('mouseup', () => { isMoving = false; isResizing = false; });
+
+        function updatePreview() {
+            if (!img.src) return;
+            const rect = cropGuide.getBoundingClientRect();
+            const canvasRect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / canvasRect.width;
+            const scaleY = canvas.height / canvasRect.height;
+
+            const x = (rect.left - canvasRect.left) * scaleX;
+            const y = (rect.top - canvasRect.top) * scaleY;
+            const w = rect.width * scaleX;
+            const h = rect.height * scaleY;
+
+            if (w > 0 && h > 0) {
+                previewCanvas.width = w;
+                previewCanvas.height = h;
+                previewCanvas.style.display = 'inline-block';
+                pCtx.filter = currentFilter;
+                pCtx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
+            }
+        }
