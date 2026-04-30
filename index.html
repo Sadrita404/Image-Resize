@@ -430,3 +430,11 @@
             link.href = previewCanvas.toDataURL('image/png');
             link.click();
         });
+
+        function resetCanvasTransform() {
+            canvas.style.transform = 'scale(1)';
+            zoomRange.value = 1;
+        }
+    </script>
+</body>
+</html>
