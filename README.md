@@ -17,43 +17,15 @@
   |:--|
 |HTML|
 
+---
+
+For the ratio part we need to move the grid scale to position the image and then it will effect on the image and then we can save the desire ratio.
 
 ---
 
 ## Features
 
-* Image Upload: Select files.
-
-* Canvas Rendering: Visual editor.
-
-* Click Sounds: Audio feedback.
-
-* 90° Rotation: Image transform.
-
-* Square Ratio: 1:1 format.
-
-* Wide Ratio: 16:9 format.
-
-* Story Ratio: 9:16 format.
-
-* Free Form: Manual sizing.
-
-* Grayscale Filter: Mono effect.
-
-* Sepia Filter: Vintage effect.
-
-* Filter Reset: Clear effects.
-
-* Moveable Box: Adjustable crop.
-
-* Resize Handles: Eight points.
-
-* Area Dimming: Focus highlight.
-
-* Real-time Preview: Live view.
-
-* PNG Export: Save image.
-
+So, basically, you just upload your photo into this visual editor and can go to town on it—rotate it 90 degrees or slap on some cool mono and vintage filters. It’s got this super handy eight-point crop box with a live preview and a dimming effect so you can really focus on your framing. Plus, there are preset ratios for squares, widescreen, or stories, and every click has this snappy audio feedback that makes the whole process feel really smooth and tactile before you export your final PNG.
 
 ---
 
