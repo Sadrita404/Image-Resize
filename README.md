@@ -57,6 +57,9 @@
 
 ---
 
+Ai Use - I have use ai to know about how to implement the crop feature.
+
+---
 
 ## To run it locally 
 * 1) Fork the repo 
