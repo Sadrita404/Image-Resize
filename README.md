@@ -1,6 +1,6 @@
 # Image Resize
 
-|Title |I-Convert|
+|Title |Image Resize|
 | :-- | :-- |
 |Author | Sadrita Neogi|
 |Platform | [Beest](https://beest.hackclub.com/)|
