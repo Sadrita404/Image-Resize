@@ -11,7 +11,7 @@
 
 ---
 
-### Inspiration: 
+### Inspo:
 My inspiration was the website that I mostly use for editing photos like Canva , and other web applications, which is good and perfect and I take the inspiration from there so that I can make one for myself, and I can show to someone else that I have made this.
 
 ### Why I built it: 
