@@ -1,3 +1,5 @@
+<img width="1300" height="174" alt="Screenshot 2026-05-06 at 12 21 03 AM" src="https://github.com/user-attachments/assets/a9c59689-d778-4f3e-83ef-9e46a5cc0ce9" />
+
 # Image Resize
 
 |Title |Image Resize|
